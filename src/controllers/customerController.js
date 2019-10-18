@@ -27,6 +27,30 @@ controller.insert=(req,res)=>{
     });
 };
 
+//metodo getbyid par edit de la db
+controller.edit=(req,res)=>{
+    const {id}=req.params;//otra forma = const id=req.params.id;
+    req.getConnection((err,conn)=>{
+        conn.query('SELECT*FROM customer WHERE id= ?',[id],(err,clientes)=>{
+            //console.log(clientes);
+            res.render('customer_edit',{
+                data:clientes[0]
+            });
+        })
+    });
+ };
+
+ //metodo update de la db
+controller.update=(req,res)=>{
+    const {id}=req.params;//otra forma = const id=req.params.id;
+    const data=req.body;//datos que vienen del formulario
+    req.getConnection((err,conn)=>{
+        conn.query('UPDATE customer SET ? WHERE id= ?',[data,id],(err,clientes)=>{
+            res.redirect('/');
+        })
+    });
+ };
+
 //metodo delete a la db
 controller.delete=(req,res)=>{
     const {id}=req.params;//otra forma = const id=req.params.id;
